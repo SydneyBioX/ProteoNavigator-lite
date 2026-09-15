@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "proteonavigator-lite"
+version = "0.1.0"
+description = "A local-first LLM agent for cytoGater cell annotation workflows."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "GPL-2.0-only"}
+dependencies = [
+  "anndata>=0.10",
+  "chainlit>=2.11,<3",
+  "langchain-core>=1.0",
+  "langchain-openai>=1.0",
+  "langchain-google-genai>=4.0",
+  "langgraph>=1.0",
+  "numpy>=1.24",
+  "pandas>=2.0",
+  "joblib>=1.3",
+  "matplotlib>=3.7",
+  "pydantic>=2.0",
+  "cytogater>=0.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[project.scripts]
+proteonavigator-lite = "proteonavigator_lite.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
