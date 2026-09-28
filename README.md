@@ -31,22 +31,26 @@ high-confidence reference before kNN, RF, hierarchical kNN, or neural-network
 training. A hierarchical-plus-RF-rescue plan trains RF on confident hierarchical
 labels and predicts only cells left `Unassigned`.
 
-## Development install
+## Installation
 
-The existing `cytogater-python` conda environment already contains cytoGater and
-the agent dependencies on this workstation:
+ProteoNavigator Lite requires Python 3.10 or later. Clone the repository, enter
+the project directory, and create a virtual environment:
 
 ```bash
-conda activate cytogater-python
-cd /users/stgrad/lijiay/PRJ-cytogater/20260803-create_agent-LY/ProteoNavigator-lite
+git clone https://github.com/SydneyBioX/ProteoNavigator-lite.git
+cd ProteoNavigator-lite
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install cytogater
 python -m pip install -e .
 ```
 
-Because cytoGater is installed in the same environment, the agent imports that
-installed package. For active development, ensure it is editable:
+The `cytogater` package is installed from PyPI. To also install the development
+tools for ProteoNavigator Lite, use:
 
 ```bash
-python -m pip install -e /users/stgrad/lijiay/PRJ-cytogater/cytoGateR/python
+python -m pip install -e '.[dev]'
 ```
 
 All cytoGater calls are isolated in `src/proteonavigator_lite/backend.py`, so an
@@ -54,12 +58,10 @@ API change requires one adapter update rather than changes to prompts and tools.
 
 ## Quick start: run the agent
 
-Copy and run these commands on the machine where the project is stored:
+After completing the installation above, run:
 
 ```bash
-conda activate cytogater-python
-cd /users/stgrad/lijiay/PRJ-cytogater/20260803-create_agent-LY/ProteoNavigator-lite
-python -m pip install -e .
+source .venv/bin/activate
 DEBUG=false chainlit run app.py --host 127.0.0.1 --port 8000
 ```
 
@@ -76,12 +78,11 @@ Open `http://localhost:8000` in a browser. The first screen asks you to:
 3. enter the corresponding API key;
 4. press **Start session**.
 
-You only need `python -m pip install -e .` the first time, or after changing the
-package configuration. On later runs:
+On later runs, enter the cloned project directory and reactivate its environment:
 
 ```bash
-conda activate cytogater-python
-cd /users/stgrad/lijiay/PRJ-cytogater/20260803-create_agent-LY/ProteoNavigator-lite
+cd ProteoNavigator-lite
+source .venv/bin/activate
 DEBUG=false chainlit run app.py --host 127.0.0.1 --port 8000
 ```
 
@@ -103,8 +104,8 @@ ssh -L 8000:127.0.0.1:8000 YOUR_USERNAME@YOUR_CLUSTER_HOST
 Inside that SSH session, run:
 
 ```bash
-conda activate cytogater-python
-cd /users/stgrad/lijiay/PRJ-cytogater/20260803-create_agent-LY/ProteoNavigator-lite
+cd ProteoNavigator-lite
+source .venv/bin/activate
 DEBUG=false chainlit run app.py --host 127.0.0.1 --port 8000
 ```
 
@@ -214,7 +215,8 @@ B cell,"CD20","CD3"
 ## Tests
 
 ```bash
-conda run -n cytogater-python pytest -q
+source .venv/bin/activate
+python -m pytest -q
 ```
 
 Runtime uploads, lineage revisions, plans, outputs, and an API-key-free
